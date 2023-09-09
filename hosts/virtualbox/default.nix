@@ -1,1 +1,4 @@
-# todo
+{ ... }:
+{
+  imports = [ ./hardware.nix ];
+}

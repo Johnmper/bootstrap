@@ -33,3 +33,13 @@ nixconf/
 - `packages`: Extra packages available to the configurations.
 - `user`: The user specific setups.
 
+## How to use
+
+```bash
+# Switch to current flake configuration
+home-manager switch --flake .#johnmper -v
+
+# In case that are issue with conflict files (first time running) lets backup them as well
+home-manager switch --flake .#johnmper -v -b backup
+
+```
