@@ -6,48 +6,35 @@
       url = "github:nix-community/home-manager/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
-      inputs.nixpkgs.follows = "nixpkgs";
+    systems.url = "github:nix-systems/default";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
     };
   };
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs: 
+  outputs = { self, nixpkgs, nixpkgs-unstable, flake-utils, home-manager, ... }@inputs: 
     let 
       inherit (self) outputs;
-      system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      inherit (flake-utils.lib) system;
+      inherit (nixpkgs.lib) nixosSystem;
+      inherit (home-manager.lib) homeManagerConfiguration;
+      users = import ./users { inherit inputs outputs hosts nixpkgs homeManagerConfiguration; };
+      hosts = import ./hosts { inherit inputs nixosSystem system users; };
     in {
-      nixosConfigurations.virtualbox = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ./configuration.nix
-        ];
-      };
-      homeConfigurations = {
-        johnmper = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [ ./users/johnmper/home.nix];
-        };
-      };
-      johnmper = self.homeConfigurations.johnmper.activationPackage;
-      defaultPackage.x86_64-linux = self.johnmper;
+      nixosConfigurations = hosts.allNixosConfigurations;
+      homeConfigurations = users.allUserConfigurations;
 
-      deploy = {
-        sshUser = "root";
-        user = "root";
+      # homeConfigurations = builtins.mapAttrs (hostname: node:
+      #   builtins.listToAttrs
+      #     (builtins.map (user:
+      #       nixpkgs.lib.nameValuePair "${user.username}@${hostname}" "${user.username}CONFIG"#users.configHomeManagerUser { config = user; username = user.username; system = node.system; };
+      #     ) node.users
+      #   )
+      # ) hosts.catalog;
 
-        autoRollback = false;
-        magicRollback = false;
-
-        nodes = {
-          virtualbox = {
-            hostname = "192.168.1.6";
-            profiles.system = {
-              path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.virtualbox;
-            };
-          };
-        };
-      };
+      # homeConfigurations = mapAttrs
+      #  ( username: config:
+      #     users.configHomeManagerUser { inherit username config; host = hosts.catalog.prestige; }
+      #  ) users.catalog;
     };
 }
