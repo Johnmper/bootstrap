@@ -43,7 +43,16 @@
 
   programs = {
     home-manager.enable = true;
-    git.enable = true;
+    git = {
+      enable = true;
+      userName = "johnmper";
+      userEmail = "joaomgper94@gmail.com";
+      difftastic = {
+        enable = true;
+        display = "side-by-side-show-both";
+      };
+    };
+    git-cliff.enable = true;
     ssh.enable = true;
     tmux = {
       enable = true;
@@ -178,12 +187,43 @@
   };
 
   home.packages = with pkgs; [
+    # Some configuration needs
+    (nerdfonts.override { fonts = [ "CascadiaCode" ]; })
+
+    # Tools
+    unzip
+    fzf
     curl
+    moreutils
+    buildah
+    podman
+    nix-melt
     neovim
     du-dust
     ripgrep
-    vault
     nixpkgs-fmt
+    # # Build system
+    bazel
+    bazel-buildtools
+    # Local clustering
+    kind
+    kubernetes-helm
+    # For Rust
+    rustc
+    cargo
+    # For Cpp
+    llvmPackages_11.clang
+    cmake
+    # For python3
+    (
+        python310.withPackages
+        (ps:
+        with ps; [
+            click
+            sh
+            pydantic
+        ])
+    )
   ];
 
   systemd.user.startServices = "sd-switch"; # Reload services on switch
