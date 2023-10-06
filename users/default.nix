@@ -1,8 +1,7 @@
-{ catalog, inputs, outputs, hosts, nixpkgs, homeManagerConfiguration }:
+{ catalog, inputs, outputs, nixpkgs, home-manager }:
 rec {
-  # catalog = import ./catalog.nix { };
   configHomeManagerUser = { system, username, config }:
-    homeManagerConfiguration {
+    home-manager.lib.homeManagerConfiguration {
       pkgs = import nixpkgs { inherit system; };
       extraSpecialArgs = inputs // {
         self = config;

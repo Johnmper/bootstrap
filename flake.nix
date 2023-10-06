@@ -16,11 +16,9 @@
     let 
       inherit (self) outputs;
       inherit (flake-utils.lib) system;
-      inherit (nixpkgs.lib) nixosSystem;
-      inherit (home-manager.lib) homeManagerConfiguration;
       catalog = import ./catalog.nix { inherit system; };
-      users = import ./users { inherit catalog inputs outputs hosts nixpkgs homeManagerConfiguration; };
-      hosts = import ./hosts { inherit catalog inputs nixosSystem system users; };
+      hosts = import ./hosts { inherit nixpkgs catalog inputs system; };
+      users = import ./users { inherit nixpkgs catalog inputs outputs home-manager; };
     in {
       nixosConfigurations = hosts.allNixosConfigurations;
       homeConfigurations = users.allUserConfigurations;

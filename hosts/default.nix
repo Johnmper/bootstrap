@@ -1,8 +1,7 @@
-{ catalog, inputs, nixosSystem, system, users }:
+{ catalog, inputs, nixpkgs, system }:
 rec {
-  # catalog = import ./catalog.nix { inherit system users; };
   configNixosHost = { hostname, node }:
-    nixosSystem {
+    nixpkgs.lib.nixosSystem {
       system = node.system;
       specialArgs = inputs // {
         self = node;
