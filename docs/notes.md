@@ -2,7 +2,7 @@
 
 The linux user setup based on home-manager
 
-## Setup
+## Setup (non NixOS)
 
 ### Install Nix
 
