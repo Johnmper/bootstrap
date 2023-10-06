@@ -1,6 +1,6 @@
-{ inputs, outputs, hosts, nixpkgs, homeManagerConfiguration }:
+{ catalog, inputs, outputs, hosts, nixpkgs, homeManagerConfiguration }:
 rec {
-  catalog = import ./catalog.nix { inherit hosts; };
+  # catalog = import ./catalog.nix { };
   configHomeManagerUser = { system, username, config }:
     homeManagerConfiguration {
       pkgs = import nixpkgs { inherit system; };
@@ -19,5 +19,5 @@ rec {
           nixpkgs.lib.nameValuePair "${user.username}@${hostname}" (configHomeManagerUser { config = user; username = user.username; system = node.system; })
         ) node.users
       )
-    ) hosts.catalog);
+    ) catalog.hosts );
 }

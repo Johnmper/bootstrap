@@ -1,6 +1,6 @@
-{ inputs, nixosSystem, system, users }:
+{ catalog, inputs, nixosSystem, system, users }:
 rec {
-  catalog = import ./catalog.nix { inherit system users; };
+  # catalog = import ./catalog.nix { inherit system users; };
   configNixosHost = { hostname, node }:
     nixosSystem {
       system = node.system;
@@ -15,5 +15,5 @@ rec {
     };
   allNixosConfigurations = builtins.mapAttrs (hostname: node:
     configNixosHost { inherit hostname node; }
-  ) catalog;
+  ) catalog.hosts;
 }

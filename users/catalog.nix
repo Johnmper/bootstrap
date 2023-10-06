@@ -1,4 +1,4 @@
-{ hosts }:
+{ ... }:
 {
   johnmper = {
     username = "johnmper";
