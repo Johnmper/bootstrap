@@ -23,18 +23,5 @@
     in {
       nixosConfigurations = hosts.allNixosConfigurations;
       homeConfigurations = users.allUserConfigurations;
-
-      # homeConfigurations = builtins.mapAttrs (hostname: node:
-      #   builtins.listToAttrs
-      #     (builtins.map (user:
-      #       nixpkgs.lib.nameValuePair "${user.username}@${hostname}" "${user.username}CONFIG"#users.configHomeManagerUser { config = user; username = user.username; system = node.system; };
-      #     ) node.users
-      #   )
-      # ) hosts.catalog;
-
-      # homeConfigurations = mapAttrs
-      #  ( username: config:
-      #     users.configHomeManagerUser { inherit username config; host = hosts.catalog.prestige; }
-      #  ) users.catalog;
     };
 }
