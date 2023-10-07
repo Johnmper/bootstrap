@@ -13,7 +13,8 @@
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
   ];
-
+  # Since NMD seems to have been down for a while, lets deativate manpages for the home-manager
+  manual.manpages.enable = false;
   nixpkgs = {
     overlays = [
       # If you want to use overlays exported from other flakes:
