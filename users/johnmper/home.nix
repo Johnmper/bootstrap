@@ -195,6 +195,10 @@
       color-scheme = "prefer-dark";
       enable-hot-corners = false;
       show-battery-percentage = true;
+      clock-show-weekday = true;
+    };
+    "org/gnome/desktop/calendar" = {
+      show-weekdate = true;
     };
     "org/gnome/desktop/peripherals/touchpad" = {
       two-finger-scrolling-enabled = true;
@@ -227,11 +231,15 @@
     "org/gnome/desktop/screensaver" = {
       picture-uri = "file:///home/johnmper/.config/wallpapers/mountain_andy_betts.png";
     };
+    "org/gnome/desktop/wm/preferences" = {
+      button-layout = "appmenu:minimize,maximize,close";
+    };
   };
   home.packages = with pkgs; [
     # Some configuration needs
     (nerdfonts.override { fonts = [ "CascadiaCode" ]; })
-
+    discord
+    gnome3.gnome-tweaks
     # Tools
     unzip
     fzf
