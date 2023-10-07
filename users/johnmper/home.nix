@@ -187,6 +187,38 @@
     bash.enable = true;
   };
 
+  dconf.settings = {
+    "org/gnome/mutter" = {
+      edge-tiling = true;
+    };
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      enable-hot-corners = false;
+      show-battery-percentage = true;
+    };
+    "org/gnome/desktop/peripherals/touchpad" = {
+      two-finger-scrolling-enabled = true;
+      edge-scrolling-enabled = false;
+      natural-scroll = true;
+    };
+    "org/gnome/settings-daemon/plugins/power" = {
+      power-button-action = "suspend";
+      idle-dim = true;
+      power-saver-profile-on-low-battery = true;
+      sleep-inactive-ac-type = "nothing";
+      sleep-inactive-battery-type = "suspend";
+      sleep-inactive-battery-timeout = 900;
+    };
+    "org/gnome/settings-daemon/plugins/color" = {
+      night-light-enabled = true;
+      night-light-schedule-automatic = false;
+      night-light-schedule-from = 20.0; # From 8PM
+      night-light-schedule-to = 6.0;    # To 6AM
+    };
+    "org/gnome/desktop/session" = {
+      idle-delay = 300;
+    };
+  };
   home.packages = with pkgs; [
     # Some configuration needs
     (nerdfonts.override { fonts = [ "CascadiaCode" ]; })
@@ -199,10 +231,13 @@
     buildah
     podman
     nix-melt
-    neovim
     du-dust
     ripgrep
     nixpkgs-fmt
+    # Neovim and related packages
+    neovim
+    nodejs
+    xsel # clipboard tool for neovim
     # # Build system
     bazel
     bazel-buildtools
@@ -226,6 +261,13 @@
         ])
     )
   ];
-
+  home.file."./.config/nvim/" = {
+    source = ../../dotfiles/nvim;
+    recursive = true;
+  };
+  home.file."./.config/wallpapers/" = {
+    source = ../../dotfiles/wallpapers;
+    recursive = true;
+  };
   systemd.user.startServices = "sd-switch"; # Reload services on switch
 }
