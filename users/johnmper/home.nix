@@ -218,6 +218,15 @@
     "org/gnome/desktop/session" = {
       idle-delay = 300;
     };
+    "org/gnome/desktop/background" = {
+      picture-uri = "file:///home/johnmper/.config/wallpapers/mountain_andy_betts.png";
+      picture-uri-dark = "file:///home/johnmper/.config/wallpapers/mountain_andy_betts.png";
+      primary-color = "#000000000000";
+      secondary-color = "#000000000000";
+    };
+    "org/gnome/desktop/screensaver" = {
+      picture-uri = "file:///home/johnmper/.config/wallpapers/mountain_andy_betts.png";
+    };
   };
   home.packages = with pkgs; [
     # Some configuration needs
